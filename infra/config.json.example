@@ -1,0 +1,9 @@
+{
+	"arm_deployment_name": "papiconnectivity",
+	"subscription_id": "",
+	"tenant_id": "",
+	"admin_email_address": "you@example.com",
+	
+	"rgNamePrefix": "aipapi",
+	"location": "eastus"
+}
