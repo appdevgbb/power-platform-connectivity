@@ -8,6 +8,8 @@ param vnetPrefix string = '10.0.0.0/16'
 
 param admin_email_address string
 
+var localPrefix = '${prefix}-hub'
+
 var apimSubnet = {
   name: 'apimsubnet'
   properties: {
@@ -44,7 +46,7 @@ var workloadSubnet = {
 // Some rules Borrowed/Found from: https://github.com/Azure/azure-quickstart-templates/blob/master/quickstarts/microsoft.apimanagement/api-management-create-with-external-vnet-publicip/main.bicep
 
 resource apimnsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
-  name: '${prefix}-apim-nsg'
+  name: '${localPrefix}-apim-nsg'
   location: location
   properties: {
     securityRules: [
@@ -282,7 +284,7 @@ resource apimnsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
 }
 
 resource vnet 'Microsoft.Network/virtualNetworks@2020-08-01' = {
-  name: '${prefix}-vnet'
+  name: '${localPrefix}-vnet'
   location: location
   properties: {
     addressSpace: {
@@ -298,7 +300,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2020-08-01' = {
 }
 
 resource apimpip 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
-  name: '${prefix}-pip'
+  name: '${localPrefix}-pip'
   location: location
   sku: {
     name: 'Standard'
@@ -308,13 +310,13 @@ resource apimpip 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
     publicIPAddressVersion: 'IPv4'
     publicIPAllocationMethod: 'Static'
     dnsSettings: {
-      domainNameLabel: '${prefix}-apim'
+      domainNameLabel: '${localPrefix}-apim'
     }
   }
 }
 
 resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
-  name: '${prefix}-apim'
+  name: '${localPrefix}-apim'
   location: location
   sku: {
     capacity: 1
