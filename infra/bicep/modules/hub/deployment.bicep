@@ -339,4 +339,6 @@ resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
 }
 
 // Outputs
-output vnet string = vnet.id
+output vnet object = vnet
+output vnetName string = vnet.name
+output vnetId string = vnet.id

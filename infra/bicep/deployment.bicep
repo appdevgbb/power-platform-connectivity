@@ -37,3 +37,23 @@ module onprem 'modules/onprem/deployment.bicep' = {
     location: location
   }
 }
+
+module hubToOnpremPeering 'modules/network/vnetPeering/deployment.bicep' = {
+  scope: hubRg
+  name: 'hubToOnpremPeering'
+  params: {
+    localVnetName: hub.outputs.vnetName
+    remoteVnetId: onprem.outputs.vnetId
+    peeringName: 'hubToOnprem'
+  }
+}
+
+module onpremtoHubPeering 'modules/network/vnetPeering/deployment.bicep' = {
+  scope: onpremRg
+  name: 'onpremToHub'
+  params: {
+    localVnetName: onprem.outputs.vnetName
+    remoteVnetId: hub.outputs.vnetId
+    peeringName: 'onpremToHub'
+  }
+}
