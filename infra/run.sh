@@ -19,5 +19,4 @@ az deployment sub create \
 	--location=$LOCATION \
 	--parameters prefix=$PREFIX \
 	--parameters admin_email_address=$ADMIN_EMAIL_ADDRESS \
-	--parameters location=$LOCATION \
-	--no-wait
+	--parameters location=$LOCATION

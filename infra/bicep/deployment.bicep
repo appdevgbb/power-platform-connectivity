@@ -57,3 +57,14 @@ module onpremtoHubPeering 'modules/network/vnetPeering/deployment.bicep' = {
     peeringName: 'onpremToHub'
   }
 }
+
+module dnszone 'modules/network/dnszone/deployment.bicep' = {
+  scope: hubRg
+  name: 'privateDnsZone'
+  params: {
+    vnets: [
+      hub.outputs.vnetId
+      onprem.outputs.vnetId
+    ]
+  }
+}
