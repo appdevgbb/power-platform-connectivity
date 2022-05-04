@@ -18,6 +18,13 @@ var workloadSubnet = {
   }
 }
 
+var loadBalancerSubnet = {
+  name: 'loadbalancersubnet'
+  properties: {
+    addressPrefix: '10.1.2.0/24'
+  }
+}
+
 //
 // Top Level Resources
 //
@@ -70,8 +77,18 @@ resource vnet 'Microsoft.Network/virtualNetworks@2020-08-01' = {
     }
     subnets: [
       workloadSubnet
+      loadBalancerSubnet
     ]
   } 
+}
+
+module aks '../compute/aks.bicep' = {
+  name: 'workload-aks'
+  params: {
+    prefix: localPrefix
+    location: location
+    subnetId: vnet.properties.subnets[0].id
+  }
 }
 
 // Outputs

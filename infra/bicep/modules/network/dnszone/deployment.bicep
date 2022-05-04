@@ -16,3 +16,5 @@ resource dnszonelink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020
     }
   }
 }]
+
+output name string = dnszone.name

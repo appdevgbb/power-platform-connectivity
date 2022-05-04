@@ -38,6 +38,13 @@ var workloadSubnet = {
   }
 }
 
+var loadBalancerSubnet = {
+  name: 'loadbalancersubnet'
+  properties: {
+    addressPrefix: '10.0.2.0/24'
+  }
+}
+
 //
 // Top Level Resources
 //
@@ -295,6 +302,7 @@ resource vnet 'Microsoft.Network/virtualNetworks@2020-08-01' = {
     subnets: [
       apimSubnet
       workloadSubnet
+      loadBalancerSubnet
     ]
   } 
 }
@@ -335,6 +343,15 @@ resource apim 'Microsoft.ApiManagement/service@2021-08-01' = {
     }
     virtualNetworkType: 'External'
     // virtualNetworkType: 'External' // Used for Internal APIM in addtion to the below resources
+  }
+}
+
+module aks '../compute/aks.bicep' = {
+  name: 'workload-aks'
+  params: {
+    prefix: localPrefix
+    location: location
+    subnetId: vnet.properties.subnets[1].id
   }
 }
 

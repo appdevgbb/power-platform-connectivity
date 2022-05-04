@@ -68,3 +68,21 @@ module dnszone 'modules/network/dnszone/deployment.bicep' = {
     ]
   }
 }
+
+module aRecords 'modules/network/dnszone/arecord.bicep' = {
+  scope: hubRg
+  name: 'onpremWorkloadARecord'
+  params: {
+    dnsZoneName: dnszone.outputs.name
+    records: [
+      {
+        name: 'hubworkload'
+        ipAddress: '10.0.2.4'
+      }
+      {
+        name: 'onpremworkload'
+        ipAddress: '10.1.2.4'
+      }
+    ]
+  }
+}
