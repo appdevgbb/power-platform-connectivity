@@ -9,6 +9,17 @@ param admin_email_address string
 
 var localPrefix = '${prefix}-${location}'
 
+var records = [
+  {
+    name: 'hubworkload'
+    ipAddress: '10.0.2.4'
+  }
+  {
+    name: 'onpremworkload'
+    ipAddress: '10.1.2.4'
+  }
+]
+
 resource hubRg 'Microsoft.Resources/resourceGroups@2021-04-01' = {
   name: '${localPrefix}-hub'
   location: location
@@ -74,15 +85,9 @@ module aRecords 'modules/network/dnszone/arecord.bicep' = {
   name: 'onpremWorkloadARecord'
   params: {
     dnsZoneName: dnszone.outputs.name
-    records: [
-      {
-        name: 'hubworkload'
-        ipAddress: '10.0.2.4'
-      }
-      {
-        name: 'onpremworkload'
-        ipAddress: '10.1.2.4'
-      }
-    ]
+    records: records
   }
 }
+
+output hubAks object = union(records[0], hub.outputs.aksInfo)
+output onpremAks object = union(records[1], onprem.outputs.aksInfo)

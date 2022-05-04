@@ -359,3 +359,4 @@ module aks '../compute/aks.bicep' = {
 output vnet object = vnet
 output vnetName string = vnet.name
 output vnetId string = vnet.id
+output aksInfo object = aks.outputs.info
