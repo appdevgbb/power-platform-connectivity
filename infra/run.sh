@@ -25,14 +25,17 @@ mkdir -p .tmp
 
 az deployment sub show --name $ARM_DEPLOYMENT_NAME | jq -r '.properties.outputs' >> .tmp/output.json
 
-export clustername=$(cat .tmp/output.json | jq -r '.hubAks.value.name')
-export clusterrg=$(cat .tmp/output.json | jq -r '.hubAks.value.name')
+export clustername=$(cat .tmp/output.json | jq -r '.hub.value.aks.name')
+export clusterrg=$(cat .tmp/output.json | jq -r '.hub.value.aks.rg')
+export aksmsi=$(cat .tmp/output.json | jq -r '.hub.value.aks.msi')
 
+echo $aksmsi
 az aks get-credentials -n $clustername -g $clusterrg
 kubectl apply -f k8s/hub-workload.yaml
 
-export clustername=$(cat .tmp/output.json | jq -r '.onpremAks.value.name')
-export clusterrg=$(cat .tmp/output.json | jq -r '.onpremAks.value.name')
+# export clustername=$(cat .tmp/output.json | jq -r '.onprem.value.aks.name')
+# export clusterrg=$(cat .tmp/output.json | jq -r '.onprem.value.aks.rg')
+# export aksmsi=$(cat .tmp/output.json | jq -r '.hub.value.aks.msi')
 
-az aks get-credentials -n $clustername -g $clusterrg
-kubectl apply -f k8s/onprem-workload.yaml
+# az aks get-credentials -n $clustername -g $clusterrg
+# kubectl apply -f k8s/onprem-workload.yaml

@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backendService
+  name: backendservice
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
 spec:
   type: LoadBalancer
   loadBalancerIP: 10.1.2.4
   selector:
-    app: backendApp
+    app: backendapp
   ports:
     - protocol: TCP
       port: 80
@@ -17,18 +17,18 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx-deployment
+  name: backendapp
   labels:
-    app: backendApp
+    app: backendapp
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: backendApp
+      app: backendapp
   template:
     metadata:
       labels:
-        app: backendApp
+        app: backendapp
     spec:
       containers:
       - name: nginx
