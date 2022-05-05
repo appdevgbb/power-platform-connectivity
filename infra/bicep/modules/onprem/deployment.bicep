@@ -9,7 +9,7 @@ param vnetPrefix string = '10.1.0.0/16'
 var localPrefix = '${prefix}-onprem'
 
 var workloadSubnet = {
-  name: 'apimsubnet'
+  name: 'workloadsubnet'
   properties: {
     addressPrefix: '10.1.1.0/24'
     networkSecurityGroup: {
@@ -87,10 +87,11 @@ module aks '../compute/aks.bicep' = {
   params: {
     prefix: localPrefix
     location: location
-    subnetId: vnet.properties.subnets[0].id
+    subnetId: '${vnet.id}/subnets/${workloadSubnet.name}'
   }
 }
 
+@description('Required to allow the AKS cluster to assign loadbalancers in a different subnet')
 module aksNetworkContributorRoleAssignment '../roleAssignments/deployment.bicep' = {
   name: 'onpremAksNetworkContributorRoleAssignment'
   params: {
