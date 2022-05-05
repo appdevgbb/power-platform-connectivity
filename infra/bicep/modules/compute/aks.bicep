@@ -94,4 +94,5 @@ resource aks 'Microsoft.ContainerService/managedClusters@2021-03-01' = {
 output info object = {
   name: aks.name
   rg: resourceGroup().name
+  msi: aks.identity.principalId
 }
