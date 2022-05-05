@@ -91,6 +91,14 @@ module aks '../compute/aks.bicep' = {
   }
 }
 
+module aksNetworkContributorRoleAssignment '../roleAssignments/deployment.bicep' = {
+  name: 'onpremAksNetworkContributorRoleAssignment'
+  params: {
+    roleDefinitionId: '4d97b98b-1d4f-4787-a291-c67834d212e7'
+    identityId: aks.outputs.info.msi
+  }
+}
+
 // Outputs
 output vnet object = vnet
 output vnetName string = vnet.name

@@ -89,5 +89,12 @@ module aRecords 'modules/network/dnszone/arecord.bicep' = {
   }
 }
 
-output hubAks object = union(records[0], hub.outputs.aksInfo)
-output onpremAks object = union(records[1], onprem.outputs.aksInfo)
+output hub object = {
+  vnetId: hub.outputs.vnetId
+  aks: union(records[0], hub.outputs.aksInfo)
+}
+
+output onprem object = {
+  vnetId: onprem.outputs.vnetId
+  aks: union(records[1], onprem.outputs.aksInfo)
+}

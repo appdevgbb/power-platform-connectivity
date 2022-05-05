@@ -64,6 +64,15 @@ module aks '../compute/aks.bicep' = {
   }
 }
 
+@description('Required to allow the AKS cluster to assign loadbalancers in a different subnet')
+module aksNetworkContributorRoleAssignment '../roleAssignments/deployment.bicep' = {
+  name: 'hubAksNetworkContributorRoleAssignment'
+  params: {
+    roleDefinitionId: '4d97b98b-1d4f-4787-a291-c67834d212e7'
+    identityId: aks.outputs.info.msi
+  }
+}
+
 // Outputs
 output vnet object = vnet
 output vnetName string = vnet.name
