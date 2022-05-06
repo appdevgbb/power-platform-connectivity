@@ -13,7 +13,7 @@ var workloadSubnet = {
   properties: {
     addressPrefix: '10.1.1.0/24'
     networkSecurityGroup: {
-      id: workloadnsg.id
+      id: defaultnsg.id
     }
   }
 }
@@ -22,6 +22,9 @@ var loadBalancerSubnet = {
   name: 'loadbalancersubnet'
   properties: {
     addressPrefix: '10.1.2.0/24'
+    networkSecurityGroup: {
+      id: defaultnsg.id
+    }
   }
 }
 
@@ -29,40 +32,11 @@ var loadBalancerSubnet = {
 // Top Level Resources
 //
 
-resource workloadnsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
-  name: '${localPrefix}-workload-nsg'
+resource defaultnsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
+  name: '${localPrefix}-default-nsg'
   location: location
   properties: {
-    securityRules: [
-      {
-        name: 'Allow-Inbound-Vnet-Http'
-        properties: {
-          access: 'Allow'
-          description: 'Http to Subnet'
-          destinationAddressPrefix: 'VirtualNetwork'
-          destinationPortRange: '80'
-          direction: 'Inbound'
-          priority: 100
-          protocol: 'Tcp'
-          sourceAddressPrefix: 'VirtualNetwork'
-          sourcePortRange: '*'
-        }
-      }
-      {
-        name: 'Allow-Inbound-VNET-Https'
-        properties: {
-          access: 'Allow'
-          description: 'Https to Subnet'
-          destinationAddressPrefix: 'VirtualNetwork'
-          destinationPortRange: '443'
-          direction: 'Inbound'
-          priority: 110
-          protocol: 'Tcp'
-          sourceAddressPrefix: 'VirtualNetwork'
-          sourcePortRange: '*'
-        }
-      }
-    ]
+    securityRules: []
   }
 }
 

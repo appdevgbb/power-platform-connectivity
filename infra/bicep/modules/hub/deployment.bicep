@@ -34,7 +34,10 @@ var apimsubnet = {
 var workloadSubnet = {
   name: 'workloadsubnet'
   properties: {
-    addressPrefix: '10.0.1.0/24'       
+    addressPrefix: '10.0.1.0/24'   
+    networkSecurityGroup: {
+      id: defaultnsg.id
+    }    
   }
 }
 
@@ -42,6 +45,17 @@ var loadBalancerSubnet = {
   name: 'loadbalancersubnet'
   properties: {
     addressPrefix: '10.0.2.0/24'
+    networkSecurityGroup: {
+      id: defaultnsg.id
+    }
+  }
+}
+
+resource defaultnsg 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
+  name: '${localPrefix}-default-nsg'
+  location: location
+  properties: {
+    securityRules: []
   }
 }
 
